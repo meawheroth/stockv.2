@@ -2,6 +2,13 @@ module.exports = (error, req, res, next) => {
   if (res.headersSent) return next(error);
 
   if (error.code === 11000) {
+    console.error(
+      'Duplicate key:',
+      error.keyPattern,
+      error.keyValue,
+      error.message
+    );
+
     const field = Object.keys(error.keyPattern || {})[0];
 
     const messages = {
@@ -14,6 +21,12 @@ module.exports = (error, req, res, next) => {
       error: messages[field] || 'ข้อมูลนี้ถูกใช้แล้ว'
     });
   }
+
+  const status = error.status || 400;
+  return res.status(status).json({
+    error: error.message || 'เกิดข้อผิดพลาดในระบบ'
+  });
+};
 
   const status = error.status || 400;
   res.status(status).json({
