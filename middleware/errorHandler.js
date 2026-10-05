@@ -27,9 +27,3 @@ module.exports = (error, req, res, next) => {
     error: error.message || 'เกิดข้อผิดพลาดในระบบ'
   });
 };
-
-  const status = error.status || 400;
-  res.status(status).json({
-    error: error.message || 'เกิดข้อผิดพลาดในระบบ'
-  });
-};
